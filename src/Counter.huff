@@ -1,0 +1,58 @@
+/* Interface */
+#define function getNumber() view returns (uint256)
+#define function setNumber(uint256) nonpayable returns ()
+#define function increment() nonpayable returns ()
+
+/* Storage Slots */
+#define constant VALUE_LOCATION = FREE_STORAGE_POINTER()
+
+/* Methods */
+#define macro GET_NUMBER() = takes (0) returns (0) {
+    // Load value from storage.
+    [VALUE_LOCATION]   // [ptr]
+    sload                // [value]
+
+    // Store value in memory.
+    0x00 mstore
+
+    // Return value
+    0x20 0x00 return
+}
+
+#define macro SET_NUMBER() = takes (0) returns (0) {
+    0x04 calldataload   // [value]
+    [VALUE_LOCATION]    // [ptr, value]
+    sstore              // []
+
+    // Return value
+    0x20 0x00 return
+}
+
+#define macro INCREMENT() = takes (0) returns (0) {
+    // Load value from storage.
+    [VALUE_LOCATION]   // [ptr]
+    sload              // [value]
+
+    // Add 1 to value.
+    0x01 add            // [value + 1]
+    [VALUE_LOCATION]    // [ptr, value]
+
+    sstore              // []
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    // Identify which function is being called.
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(getNumber) eq get jumpi
+    dup1 __FUNC_SIG(setNumber) eq set jumpi
+    dup1 __FUNC_SIG(increment) eq increment jumpi
+
+    0x00 0x00 revert
+
+    get:
+        GET_NUMBER()
+    set:
+        SET_NUMBER()
+    increment:
+        INCREMENT()
+}
