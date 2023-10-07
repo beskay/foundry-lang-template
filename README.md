@@ -12,7 +12,7 @@ In order to compile Vyper and Huff contracts, make sure you have the respective 
 Then clone this repo and install the dependencies:
 
 ```
-git clone https://github.com/beskay/forge-lang-template.git
+git clone https://github.com/beskay/foundry-lang-template.git
 cd forge-lang-template
 forge install
 ```
