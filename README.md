@@ -1,66 +1,63 @@
-## Foundry
+# Foundry Language Template
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A Foundry template to compile and test smart contracts in various EVM languages, including Solidity, Yul, Vyper, Huff and pure Bytecode.
 
-Foundry consists of:
+# Installation / Setup
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+In order to compile Vyper and Huff contracts, make sure you have the respective compilers installed:
 
-## Documentation
+- [Vyper](https://vyper.readthedocs.io/en/stable/installing-vyper.html)
+- [Huff](https://huff.sh/)
 
-https://book.getfoundry.sh/
+Then clone this repo and install the dependencies:
 
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```
+git clone https://github.com/beskay/forge-lang-template.git
+cd forge-lang-template
+forge install
 ```
 
-### Test
+Now you are all set up and ready to go!
 
-```shell
-$ forge test
+# Testing
+
+The usage is demonstrated by the standard `Counter` contract, which is implemented in all supported languages.
+
+`Counter.sol`:
+
+```
+forge test --mc CounterTestSol --ffi
 ```
 
-### Format
+`Counter.yul`:
 
-```shell
-$ forge fmt
+```
+forge test --mc CounterTestYul --ffi
 ```
 
-### Gas Snapshots
+`Counter.vy`:
 
-```shell
-$ forge snapshot
+```
+forge test --mc CounterTestVy --ffi
 ```
 
-### Anvil
+`Counter.huff`:
 
-```shell
-$ anvil
+```
+forge test --mc CounterTestHuff --ffi
 ```
 
-### Deploy
+To test the pure bytecode implementation, you have to set the `BYTECODE` environment variable first, e.g.:
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```
+export BYTECODE=0x604680600c6000396000f3fe6000803560e01c80633fb5c1cb14603d578063d09de08a1460325763f2c9ecd81460265780fd5b60209054604051908152f35b506001815401815580f35b50600435815580f3
+
+forge test --mc CounterTestBase
 ```
 
-### Cast
+# Acknowledgements
 
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+- [Foundry-Vyper](https://github.com/0xKitsune/Foundry-Vyper/tree/main)
+- [Foundry-Yul+](https://github.com/ControlCplusControlV/Foundry-Yulp)
+- [Foundry-Huff](https://github.com/0xKitsune/Foundry-Huff)
+- [huff-project-template](https://github.com/huff-language/huff-project-template)
